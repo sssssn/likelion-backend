@@ -1,0 +1,71 @@
+package com.example.mybatis;
+
+import com.example.mybatis.dao.StudentDao;
+import com.example.mybatis.dao.StudentXmlDao;
+import com.example.mybatis.model.Student;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootApplication
+@Slf4j
+public class MybatisApplication {
+
+	public static void main(String[] args) {
+		ApplicationContext applicationContext
+				= SpringApplication.run(MybatisApplication.class, args);
+
+//		StudentDao dao = applicationContext.getBean(StudentDao.class);
+		StudentXmlDao dao = applicationContext.getBean(StudentXmlDao.class);
+		Student student = new Student();
+		student.setName("alex");
+		student.setAge(30);
+		student.setPhone("010-1234-5678");
+		student.setEmail("alex@gmail.com");
+
+		// CREATE
+		dao.createStudent(student);
+
+		// READ
+		log.info(dao.readStudent(1L).toString());
+		log.info(dao.readStudentsAll().toString());
+
+		// UPDATE
+		Student alex = dao.readStudent(1L);
+		if (alex != null) {
+			alex.setName("alexandar");
+			dao.updateStudent(alex);
+		}
+
+		// DELETE
+		dao.deleteStudent(2L);
+		dao.deleteStudent(3L);
+
+		// select with optional
+		log.info(dao.selectStudentOptional(9999L).toString());
+
+		// insert into multi dynamic SQL foreach
+		Student ash = new Student();
+		ash.setName("ash");
+		Student brock = new Student();
+		brock.setName("brock");
+		Student misty = new Student();
+		misty.setName("misty");
+
+		List<Student> batchStudents = new ArrayList<>();
+		batchStudents.add(ash);
+		batchStudents.add(brock);
+		batchStudents.add(misty);
+		dao.insertStudentBatch(batchStudents);
+
+		// select with where dynamic SQL if
+		Student target = new Student();
+		target.setName("alex");
+		target.setAge(31);
+		log.info(dao.findByFields(target).toString());
+	}
+}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>당신의 행운은?</title>
+</head>
+<body>
+<div>
+    <span th:each="num: ${winningNums}">[[${num}]] - </span>
+</div>
+<a href="/hits">뒤로가기</a>
+<a href="/lotto">다시하기</a>
+<a href="/history">당첨이력</a>
+</body>
+</html>

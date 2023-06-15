@@ -1,27 +1,31 @@
 package com.example.jpa;
 
+import com.example.jpa.dto.StudentDto;
 import com.example.jpa.entities.StudentEntity;
 import com.example.jpa.repos.StudentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AppService {
+    // @Repository Bean 객체
+    private final AppRepository repository;
     // JpaRepository
     private final StudentRepository studentRepository;
 
     public AppService(
-//            AppRepository repository,
+            AppRepository repository,
             StudentRepository studentRepository
     ) {
-//        this.repository = repository;
+        this.repository = repository;
         this.studentRepository = studentRepository;
     }
 
     // MEMO <CREATE>
-    public void createStudent(
+    public StudentDto createStudent(
             String name,
             Integer age,
             String phone,
@@ -34,7 +38,9 @@ public class AppService {
         newEntity.setPhone(phone);
         newEntity.setEmail(email);
         // repository.save()
-        this.studentRepository.save(newEntity);
+        // save() 메서드는 생성된 Entity 를 반환한다.
+        newEntity = this.studentRepository.save(newEntity);
+        return StudentDto.fromEntity(newEntity);
     }
 
     // MEMO <READ>
@@ -55,8 +61,26 @@ public class AppService {
     }
 
     // MEMO <READ ALL>
-    public void readStudentAll() {
-        System.out.println(this.studentRepository.findAll());
+    public List<StudentDto> readStudentAll() {
+        System.out.println(
+                this.studentRepository.findAll());
+        List<StudentEntity> studentEntityList
+                = this.studentRepository.findAll();
+        List<StudentDto> studentDtoList
+                = new ArrayList<>();
+        for (StudentEntity studentEntity:
+                this.studentRepository.findAll()) {
+//            StudentDto studentDto = new StudentDto();
+//            studentDto.setId(studentEntity.getId());
+//            studentDto.setName(studentEntity.getName());
+//            studentDto.setEmail(studentEntity.getEmail());
+//            studentDtoList.add(studentDto);
+            studentDtoList.add(
+                    StudentDto.fromEntity(studentEntity)
+            );
+        }
+//        return studentEntityList;
+        return studentDtoList;
     }
 
     // MEMO <UPDATE>

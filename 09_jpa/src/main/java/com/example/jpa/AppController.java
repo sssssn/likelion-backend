@@ -1,18 +1,16 @@
 package com.example.jpa;
 
-import org.springframework.stereotype.Controller;
+import com.example.jpa.dto.StudentDto;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+// 사용자의 입력을 받는 요소
 //@Controller
-@RestController
-// 모든 메서드에 @ResponseBody 를 붙이는 용도
+@RestController // 모든 메서드에 @ResponseBody 를 붙이는 용도
 public class AppController {
-    // 사용자의 입력을 받는 요소
     private final AppService service;
 
     public AppController(AppService service) {
@@ -20,6 +18,9 @@ public class AppController {
     }
 
     @GetMapping("create")
+     /*@Controller 의 Mapper 메서드에 @ResponseBody 가 붙으면
+     View 를 반환하는 것이 아닌 데이터 (Http Response Body) 를 반환한다.
+     @RestController 의 경우 모든 메서드가 @ResponseBody 가 붙은 것 처럼 동작한다. (생략 가능)*/
     public @ResponseBody String create() {
         this.service.createStudent(
                 "alex",
@@ -37,9 +38,10 @@ public class AppController {
     }
 
     @GetMapping("read-all")
-    public @ResponseBody String readAll() {
+    public @ResponseBody List<StudentDto> readAll() {
         this.service.readStudentAll();
-        return "done-read-all";
+//        return "done-read-all";
+        return this.service.readStudentAll();
     }
 
     @GetMapping("update")

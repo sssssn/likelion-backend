@@ -6,6 +6,7 @@ CREATE TABLE students (
         age INTEGER,
         phone TEXT,
         email TEXT)
+        created_at timestamp default (datetime('now'))
  */
 
 import jakarta.persistence.*;
@@ -14,7 +15,7 @@ import lombok.Data;
 @Data
 @Entity // 데이터베이스 테이블의 레코드를 나타냄
 @Table(name = "students")
-public class StudentEntity { // student_entity
+public class StudentEntity extends BaseEntity{ // student_entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

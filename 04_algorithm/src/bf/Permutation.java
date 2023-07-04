@@ -1,5 +1,7 @@
 package bf;
 
+import java.util.Arrays;
+
 public class Permutation {
     public static void main(String[] args) {
         // 0 ~ 2 사이에 3개의 숫자가 있다.
@@ -51,7 +53,6 @@ public class Permutation {
                     if (k == i || k == j) continue;
 //                    System.out.println(i + " " + j + " " + k);
                     System.out.println(numbers[i] + " " + numbers[j] + " " + numbers[k]);
-                    // TODO 숫자야구 조건 판별
                 }
             }
         }
@@ -62,8 +63,48 @@ public class Permutation {
                 if (i == j) continue;
                 for (int k = 1; k < 10; k++) {
                     if (k == i || k == j) continue;
-                    // TODO 주어진 조건을 만족하는지 테스트
-                }
+                    // TODO 숫자야구 조건 판별
+            }
+        }
+    }
+        Permutation perm = new Permutation();
+        perm.permNumbers(
+                5, 3, 0,
+                // 고른 숫자가 담기는 배열이기 때문에 r의 크기를 갖는 배열
+                new int[3],
+                // 고를 수 있는 숫자가 골라졌는지 판단하는 배열이기 때문에 n의 크기를 갖는 배열
+                new boolean[5]
+        );
+    }
+
+    private void permNumbers(
+            // 0 ~ n 까지 숫자 중
+            int n,
+            // r개를 뽑아서 나열
+            int r,
+            // 이번에 몇번째 것을 뽑는건지 (재귀 조건)
+            int k,
+            // 여태까지 만든 순열
+            int[] perm,
+            // 이 숫자를 사용한 적 있는지 여부에 대한 used
+            boolean[] used
+    ) {
+        // 선택할 만큼 선택했다.
+        if (k == r) {
+            System.out.println(Arrays.toString(perm));
+        } else {
+            // 선택 가능한 숫자 전부 확인
+            for (int i = 0; i < n; i++) {
+                // 이미 사용한 숫자인지 확인
+                if (used[i]) continue;
+                // 이번 숫자를 선택해서 저장
+                perm[k] = i;
+                used[i] = true;
+                // 다음 숫자 정하기 위한 재귀 호출
+                this.permNumbers(n, r, k + 1, perm, used);
+                // i를 k의 위치에 담는 과정을 마무리 했으면
+                // i를 다시 사용가능한 상태로
+                used[i] = false;
             }
         }
     }

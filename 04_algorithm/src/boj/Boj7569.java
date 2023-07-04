@@ -8,7 +8,7 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 // 토마토 7569
-public class Main {
+public class Boj7569 {
     // x의 변화
     private final int[] dx = {-1, 1, 0, 0, 0, 0};
     // y의 변화

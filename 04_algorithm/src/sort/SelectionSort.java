@@ -22,6 +22,8 @@ public class SelectionSort {
             int temp = arr[minIndex];
             arr[minIndex] = arr[i];
             arr[i] = temp;
+
+            // 다음 반복을 실행한다.
         }
         System.out.println(Arrays.toString(arr));
     }

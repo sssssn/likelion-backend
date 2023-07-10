@@ -1,5 +1,6 @@
 package com.example.auth.config;
 
+import com.example.auth.jwt.JwtTokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,12 +13,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 
 // 5.7 버전 이전: extends WebSecurityConfigurerAdapter
 // 6.1 버전 이후: Builder -> Lambda 를 이용 DSL 기반 설정
 @Configuration
 // @EnableWebSecurity // 2.1 버전 이후 Spring Boot Starter Security 에서는 필수 아님
 public class WebSecurityConfig {
+    private final JwtTokenFilter jwtTokenFilter;
+
+    public WebSecurityConfig(JwtTokenFilter jwtTokenFilter) {
+        this.jwtTokenFilter = jwtTokenFilter;
+    }
+
     @Bean // 메서드의 결과를 Bean 객체로 등록해주는 어노테이션
     public SecurityFilterChain securityFilterChain(
             // DI 자동으로 설정됨, 빌더 패턴처럼 사용한다.
@@ -38,21 +46,28 @@ public class WebSecurityConfig {
                                         "/token/issue"
                                 )
                                 .permitAll()
-                                .requestMatchers(
-                                        "/re-auth",
-                                        "/users/my-profile"
-                                )
-                                .authenticated()  // 인증이 된 사용자만 허가
-                                .requestMatchers(
-                                        "/",
-                                        "/users/register"
-                                )
-                                .anonymous()  // 인증이 되지 않은 사용자만 허가
+//                                .requestMatchers(
+//                                        "/re-auth",
+//                                        "/users/my-profile"
+//                                )
+//                                .authenticated()  // 인증이 된 사용자만 허가
+//                                .requestMatchers(
+//                                        "/",
+//                                        "/users/register"
+//                                )
+//                                .anonymous()  // 인증이 되지 않은 사용자만 허가
+                                .anyRequest()
+                                .authenticated()
                 )
                 .sessionManagement(
                         sessionManagement -> sessionManagement
                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
+                )
+                .addFilterBefore(
+                        jwtTokenFilter,
+                        AuthorizationFilter.class
+                )
+        ;
 //                // form 을 이용한 로그인 관련 설정
 //                .formLogin(
 //                        formLogin -> formLogin
@@ -98,7 +113,7 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         // 기본적으로 사용자 비밀번호는 해독 가능한 형태로 데이터베이스에 저장되면 안됨!
-        // -> 가본적으로 비밀번호를 단방향 암호화하는 인코더를 사용
+        // -> 기본적으로 비밀번호를 단방향 암호화하는 인코더를 사용
         return new BCryptPasswordEncoder();
     }
 }

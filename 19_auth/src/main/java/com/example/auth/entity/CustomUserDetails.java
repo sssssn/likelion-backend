@@ -21,6 +21,10 @@ public class CustomUserDetails implements UserDetails {
     private String email;
     @Getter
     private String phone;
+    @Getter
+    private String provider;
+    @Getter
+    private String providerId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -64,6 +68,8 @@ public class CustomUserDetails implements UserDetails {
                 .password(entity.getPassword())
                 .email(entity.getEmail())
                 .phone(entity.getPhone())
+                .provider(entity.getProvider())
+                .providerId(entity.getProviderId())
                 .build();
     }
 
@@ -73,6 +79,8 @@ public class CustomUserDetails implements UserDetails {
         entity.setPassword(password);
         entity.setEmail(email);
         entity.setPhone(phone);
+        entity.setProvider(provider);
+        entity.setProviderId(providerId);
         return entity;
     }
 

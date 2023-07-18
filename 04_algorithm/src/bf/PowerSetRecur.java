@@ -10,12 +10,19 @@ public class PowerSetRecur {
         new PowerSetRecur().powerSet(set, 0, new int[set.length]);
     }
 
+    private int targetSum = 10;
     public void powerSet(
             int[] set,
             // next 번째 원소를 선택할지 말지
             int next,
             int[] select
     ) {
+        int sum = 0;
+        for (int i = 0; i < next; i++) {
+            if (select[i] == 1) sum += set[i];
+        }
+        if (sum > targetSum) return;
+
         // next 가 원소의 갯수가 되면 종료
         if (next == set.length) {
             // 지금 Select 배열을 보고 출력한다.

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<header></header>
+<!-- #container -->
+<div id="container">
+    <!-- #container-item -->
+    <div class="container-item">
+        <!-- #alex-name -->
+        <h3>Alex</h3>
+        <p>alex@gmail.com</p>
+    </div>
+    <div class="container-item">
+        <h3>Brad</h3>
+        <p>brad@gmail.com</p>
+    </div>
+</div>
+<script>
+    const windowAlerts = function() {
+        window.alert()
+        window.alert('로그인이 필요합니다.')
+        window.alert('비밀번호가 맞지 않습니다.')
+        window.alert('응모가 완료 되었습니다.')
+    }
+
+    const windowConfirm = function () {
+        const doMove = window.confirm('아이템이 추가되었습니다. 장바구니로 이동하시겠습니까?')
+        if (doMove) window.open('https://google.com')
+    }
+
+    const windowPrompt = function() {
+        const todoDesc = window.prompt('새로운 할일')
+        const todoExpire = window.prompt('언제까지')
+        window.alert(`새로운 할 일: ${todoDesc}, ${todoExpire} 까지`)
+    }
+
+    const headerElem = document.querySelector('header')
+    headerElem.innerText = 'JS Generated Header'
+    const newHeading = document.createElement('h1')
+    newHeading.innerText = 'JS Generated Heading'
+    headerElem.appendChild(newHeading)
+
+    // 1. 새로운 div 요소를 만든다.
+    const newContactElem = document.createElement('div')
+
+    // 2. div 에 추가할 새로운 h3 요소를 만들고 내용을 채운다.
+    const newContactName = document.createElement('h3')
+    newContactName.innerText = 'Chad'
+
+    // 3. div 에 추가할 새로운 p 요소를 만들고 내요을 채운다.
+    const newContactEmail = document.createElement('p')
+    newContactEmail.innerText = 'chad@gmail.com'
+
+    // 4. 새로 만든 div 의 자식으로 name 과 email 을 추가하고,
+    newContactElem.appendChild(newContactName)
+    newContactElem.appendChild(newContactEmail)
+
+    // 5. 새 div 를 본래 존재한 div 의 자식으로 추가한다.
+    document.getElementById('container').appendChild(newContactElem)
+
+    const containerItems = document.querySelectorAll('.container-item')
+    const target = containerItems[0]
+    document.getElementById('container').removeChild(target)
+    document.getElementById('container').firstChild
+
+    document.title = '탭에 표시되는 내용'
+</script>
+</body>
+</html>
